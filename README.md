@@ -60,18 +60,25 @@ ExplainVideo
 | `src/styles.css` | 自包含样式，CSS 变量可主题化 |
 | `demo/` | 独立可运行 demo |
 | `test/timeline.test.ts` | 16 个协议/时间轴测试 |
+| `ITERATION.md` | 后续迭代细化清单（教学闭环 / 内容密度 / 编辑效率 / 工程化） |
 
 ## 与外语考证宝典的集成
 
 主项目路径：`/Users/zhua/WorkBuddy/2026-11-04-12-41-53/waiyu-baodian`，通过 `file:` 依赖本目录。
-入口位于各语言「精读」任务右栏（`ExplainVideoPanel`），生成链路为：
+入口位于各语言「精读」任务的独立页签「解题答疑视频」（`ExplainVideoPanel`，全宽，与材料/题目页签互斥显示），生成链路为：
 
 ```
-POST /api/explain-videos  → LLM 生成分镜脚本（目标语旁白 + 中文字幕，答案以题库为准）
+GET  /api/explain-videos/resolve?articleId=...  → 进页签先预检缓存：命中直接秒开、零 token；在跑则续轮询
+POST /api/explain-videos  → 未命中才创建 job → LLM 生成分镜脚本（目标语旁白 + 中文字幕，答案以题库为准）
                           → edge-tts 分段配音 + WordBoundary 时间轴
-                          → 落盘 .data/explain-video/local/<articleId>/
+                          → 落盘 .data/explain-video/local/<articleId>/<hash>/
+                          → job 回填真实 token 用量与 cacheHit
+GET  /api/explain-videos/jobs/:id   → 阶段进度（script / speech / assemble / done）
 GET  /api/explain-videos/:id        → ExplainVideo 协议对象
 GET  /api/explain-videos/:id/seg/N   → 分段音频（带鉴权）
 PUT  /api/explain-videos/:id/transcript → 保存编辑后的逐字稿
 POST /api/explain-videos/:id/export     → ffmpeg 合成 mp4（npm 静态 ffmpeg 优先）
 ```
+
+缓存 key = `articleId + voice + rate + scriptVersion + 题目文本 + 正文 + 译文`，
+换文章或改脚本版本都会自然失效；改音色/语速可复用同一份 LLM 脚本（v0.4 计划）。

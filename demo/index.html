@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@waiyu/explain-video · 独立 Demo</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 28px;
+        background: #f2f4f8;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif;
+        color: #1f2430;
+      }
+      .wrap { max-width: 760px; margin: 0 auto; }
+      h1 { font-size: 20px; margin: 0 0 6px; }
+      p.sub { color: #6b7280; font-size: 13px; margin: 0 0 20px; }
+      .card { background: #fff; padding: 16px; border-radius: 14px; box-shadow: 0 6px 22px rgba(0,0,0,.06); }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <h1>解题答疑视频 · SDK 独立 Demo</h1>
+      <p class="sub">手写 5 镜 JSON，音频用 WebAudio 现场生成（无需网络、无需 ffmpeg）。试播放 / seek / 编辑逐字稿。</p>
+      <div id="root"></div>
+    </div>
+    <script type="module" src="./main.tsx"></script>
+  </body>
+</html>

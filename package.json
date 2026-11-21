@@ -1,0 +1,63 @@
+{
+  "name": "@waiyu/explain-video",
+  "version": "0.1.0",
+  "description": "解题答疑视频 SDK —— 用「音频时间轴 + 结构化分镜」在浏览器里以 Div 渲染 AI 教授级讲解，支持 seek、逐字稿编辑与实时同步，零重型依赖。与外语考证宝典主应用零耦合。",
+  "type": "module",
+  "license": "MIT",
+  "main": "./dist/explain-video.cjs",
+  "module": "./dist/explain-video.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/explain-video.js",
+      "require": "./dist/explain-video.cjs"
+    },
+    "./react": {
+      "types": "./dist/react/index.d.ts",
+      "import": "./dist/react.js",
+      "require": "./dist/react.cjs"
+    },
+    "./styles.css": "./dist/styles.css"
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "scripts": {
+    "dev": "vite --config vite.demo.config.ts",
+    "build:demo": "vite build --config vite.demo.config.ts",
+    "build": "tsc -p tsconfig.build.json && vite build && cp src/styles.css dist/styles.css",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "peerDependencies": {
+    "react": ">=17",
+    "react-dom": ">=17"
+  },
+  "peerDependenciesMeta": {
+    "react": { "optional": true },
+    "react-dom": { "optional": true }
+  },
+  "devDependencies": {
+    "@types/node": "^22.5.0",
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "typescript": "^5.5.4",
+    "vite": "^5.4.2",
+    "vitest": "^2.1.0"
+  },
+  "keywords": [
+    "explain-video",
+    "timeline",
+    "subtitle",
+    "transcript",
+    "player",
+    "react"
+  ]
+}

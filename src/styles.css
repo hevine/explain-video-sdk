@@ -1,0 +1,515 @@
+/**
+ * @waiyu/explain-video 自带样式。
+ * 全部颜色 / 字体走 CSS 变量，宿主可在 .ev-root 上覆盖（theme prop 或外层 CSS）。
+ * 默认浅色，字体/圆角与主项目一致；不引入任何 UI 库。
+ */
+.ev-root {
+  --ev-accent: #4f7cff;
+  --ev-accent-soft: #eaf0ff;
+  --ev-ink: #1f2430;
+  --ev-ink-soft: #6b7280;
+  --ev-surface: #ffffff;
+  --ev-surface-alt: #f7f8fb;
+  --ev-line: #e8eaf0;
+  --ev-font: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  --ev-font-serif: Georgia, 'Songti SC', 'Noto Serif', serif;
+  --ev-radius: 14px;
+  --ev-shadow: 0 6px 22px rgba(31, 36, 48, 0.08);
+
+  font-family: var(--ev-font);
+  color: var(--ev-ink);
+  background: var(--ev-surface);
+  border: 1px solid var(--ev-line);
+  border-radius: var(--ev-radius);
+  box-shadow: var(--ev-shadow);
+  overflow: hidden;
+  width: 100%;
+}
+
+.ev-root * {
+  box-sizing: border-box;
+}
+
+/* ---------- 画面 ---------- */
+.ev-stage {
+  position: relative;
+  min-height: 300px;
+  padding: 26px 24px 64px;
+  background:
+    radial-gradient(120% 90% at 100% 0%, var(--ev-accent-soft) 0%, transparent 55%),
+    var(--ev-surface);
+  cursor: pointer;
+  user-select: none;
+}
+
+.ev-subtitle {
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  bottom: 14px;
+  text-align: center;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ev-ink);
+  background: color-mix(in srgb, var(--ev-surface) 90%, transparent);
+  padding: 6px 10px;
+  border-radius: 8px;
+  min-height: 30px;
+}
+
+.ev-big-play {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 40px;
+  color: var(--ev-accent);
+  background: color-mix(in srgb, var(--ev-surface) 55%, transparent);
+  pointer-events: none;
+}
+
+/* ---------- 通用分镜排版 ---------- */
+.ev-kicker {
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--ev-accent);
+  font-weight: 700;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+
+.ev-shot-caption {
+  margin-top: 14px;
+  padding: 10px 12px;
+  border-left: 3px solid var(--ev-accent);
+  background: var(--ev-surface-alt);
+  color: var(--ev-ink);
+  font-size: 13px;
+  line-height: 1.6;
+  border-radius: 0 8px 8px 0;
+}
+
+.ev-pill {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  background: var(--ev-accent);
+  color: #fff;
+}
+.ev-pill-soft {
+  background: var(--ev-accent-soft);
+  color: var(--ev-accent);
+}
+
+/* 片头 */
+.ev-cover-title {
+  font-family: var(--ev-font-serif);
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.35;
+  margin: 8px 0 18px;
+}
+.ev-cover-kicker {
+  color: var(--ev-ink-soft);
+  font-size: 12px;
+}
+.ev-cover-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* 题干 / 选项 */
+.ev-prompt {
+  font-family: var(--ev-font-serif);
+  font-size: 17px;
+  line-height: 1.7;
+  margin-bottom: 14px;
+}
+.ev-options {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+.ev-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 9px 12px;
+  border: 1px solid var(--ev-line);
+  border-radius: 9px;
+  background: var(--ev-surface);
+  font-size: 14px;
+  line-height: 1.5;
+  transition: background 0.2s, border-color 0.2s;
+}
+.ev-option-focus {
+  border-color: var(--ev-accent);
+  background: var(--ev-accent-soft);
+}
+.ev-option-letter,
+.ev-answer-letter {
+  flex: 0 0 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  border-radius: 6px;
+  background: var(--ev-surface-alt);
+  color: var(--ev-ink-soft);
+  font-weight: 700;
+  font-size: 12px;
+}
+.ev-option-focus .ev-option-letter {
+  background: var(--ev-accent);
+  color: #fff;
+}
+.ev-option-text {
+  flex: 1;
+  min-width: 0;
+}
+.ev-option-struck .ev-option-text {
+  text-decoration: line-through;
+  color: var(--ev-ink-soft);
+}
+.ev-option-x {
+  color: #d64545;
+  font-weight: 700;
+}
+
+/* 原文定位 */
+.ev-passage-body {
+  font-family: var(--ev-font-serif);
+  font-size: 16px;
+  line-height: 1.9;
+  white-space: pre-wrap;
+  max-height: 220px;
+  overflow: auto;
+}
+.ev-mark {
+  background: color-mix(in srgb, var(--ev-accent) 22%, transparent);
+  color: inherit;
+  padding: 1px 2px;
+  border-radius: 3px;
+}
+
+/* 语法镜 */
+.ev-grammar-sentence {
+  font-family: var(--ev-font-serif);
+  font-size: 18px;
+  line-height: 1.7;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px dashed var(--ev-line);
+}
+.ev-grammar-structure,
+.ev-grammar-note,
+.ev-grammar-translation {
+  font-size: 14px;
+  line-height: 1.75;
+  margin-bottom: 8px;
+}
+.ev-tag {
+  display: inline-block;
+  font-size: 11px;
+  padding: 1px 8px;
+  border-radius: 5px;
+  background: var(--ev-accent-soft);
+  color: var(--ev-accent);
+  margin-right: 8px;
+}
+.ev-grammar-translation {
+  color: var(--ev-ink-soft);
+}
+
+/* 答案镜 */
+.ev-answer-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  border: 2px solid #2f9e63;
+  background: color-mix(in srgb, #2f9e63 10%, var(--ev-surface));
+  border-radius: 10px;
+  font-size: 15px;
+}
+.ev-answer-badge {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #2f9e63;
+  color: #fff;
+  font-weight: 700;
+}
+
+/* 考点 / 小结 */
+.ev-point-label {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ev-accent);
+  margin-bottom: 10px;
+}
+.ev-point-text,
+.ev-takeaway-text {
+  font-size: 16px;
+  line-height: 1.8;
+}
+.ev-takeaway-foot {
+  margin-top: 16px;
+  font-size: 12px;
+  color: var(--ev-ink-soft);
+}
+
+/* ---------- 分镜进度点 ---------- */
+.ev-dots {
+  display: flex;
+  gap: 5px;
+  padding: 10px 14px 0;
+}
+.ev-dot {
+  flex: 1;
+  height: 4px;
+  border: 0;
+  border-radius: 2px;
+  background: var(--ev-line);
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.2s;
+}
+.ev-dot:hover {
+  background: var(--ev-accent-soft);
+}
+.ev-dot-active {
+  background: var(--ev-accent);
+}
+
+/* ---------- 控制条 ---------- */
+.ev-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px 12px;
+  flex-wrap: wrap;
+}
+.ev-btn {
+  border: 1px solid var(--ev-line);
+  background: var(--ev-surface);
+  color: var(--ev-ink);
+  border-radius: 8px;
+  min-width: 32px;
+  height: 32px;
+  padding: 0 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-family: inherit;
+}
+.ev-btn:hover {
+  border-color: var(--ev-accent);
+  color: var(--ev-accent);
+}
+.ev-btn-main {
+  background: var(--ev-accent);
+  border-color: var(--ev-accent);
+  color: #fff;
+  font-size: 12px;
+}
+.ev-btn-main:hover {
+  color: #fff;
+  filter: brightness(1.05);
+}
+.ev-btn-text {
+  padding: 0 10px;
+}
+.ev-btn-on {
+  background: var(--ev-accent-soft);
+  border-color: var(--ev-accent);
+  color: var(--ev-accent);
+}
+.ev-time {
+  font-size: 12px;
+  color: var(--ev-ink-soft);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.ev-seek {
+  flex: 1;
+  min-width: 120px;
+  height: 4px;
+  border-radius: 2px;
+  appearance: none;
+  background: linear-gradient(
+    to right,
+    var(--ev-accent) 0%,
+    var(--ev-accent) var(--ev-progress, 0%),
+    var(--ev-line) var(--ev-progress, 0%),
+    var(--ev-line) 100%
+  );
+  cursor: pointer;
+}
+.ev-seek::-webkit-slider-thumb {
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--ev-accent);
+  border: 2px solid var(--ev-surface);
+  box-shadow: 0 0 0 1px var(--ev-accent);
+}
+.ev-rate {
+  border: 1px solid var(--ev-line);
+  background: var(--ev-surface);
+  color: var(--ev-ink);
+  border-radius: 8px;
+  height: 32px;
+  padding: 0 6px;
+  font-size: 12px;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+/* ---------- 逐字稿编辑器 ---------- */
+.ev-transcript {
+  border-top: 1px solid var(--ev-line);
+  background: var(--ev-surface-alt);
+}
+.ev-transcript-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  font-size: 13px;
+}
+.ev-hint {
+  font-size: 11px;
+  color: var(--ev-ink-soft);
+}
+.ev-transcript-list {
+  max-height: 320px;
+  overflow: auto;
+  padding: 0 10px 10px;
+}
+.ev-ts-shot {
+  border: 1px solid var(--ev-line);
+  border-radius: 9px;
+  background: var(--ev-surface);
+  margin-bottom: 6px;
+  overflow: hidden;
+}
+.ev-ts-shot-active {
+  border-color: var(--ev-accent);
+}
+.ev-ts-shot-head {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border: 0;
+  background: transparent;
+  color: var(--ev-ink);
+  cursor: pointer;
+  text-align: left;
+  font-size: 12px;
+  font-family: inherit;
+}
+.ev-ts-idx {
+  flex: 0 0 20px;
+  height: 20px;
+  display: grid;
+  place-items: center;
+  border-radius: 5px;
+  background: var(--ev-accent-soft);
+  color: var(--ev-accent);
+  font-weight: 700;
+}
+.ev-ts-kind {
+  color: var(--ev-accent);
+  font-weight: 700;
+  flex: 0 0 auto;
+}
+.ev-ts-shot-caption {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--ev-ink-soft);
+}
+.ev-ts-caret {
+  color: var(--ev-ink-soft);
+}
+.ev-ts-cues {
+  border-top: 1px solid var(--ev-line);
+  padding: 6px;
+  display: grid;
+  gap: 6px;
+}
+.ev-ts-cue {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 6px;
+  border-radius: 7px;
+}
+.ev-ts-cue-active {
+  background: var(--ev-accent-soft);
+}
+.ev-ts-time {
+  flex: 0 0 auto;
+  border: 0;
+  background: transparent;
+  color: var(--ev-accent);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  padding: 4px 0;
+  font-family: inherit;
+}
+.ev-ts-fields {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  gap: 4px;
+}
+.ev-ts-input,
+.ev-ts-textarea {
+  width: 100%;
+  border: 1px solid var(--ev-line);
+  border-radius: 6px;
+  padding: 5px 8px;
+  font-size: 12px;
+  line-height: 1.5;
+  font-family: inherit;
+  color: var(--ev-ink);
+  background: var(--ev-surface);
+  resize: vertical;
+}
+.ev-ts-input:focus,
+.ev-ts-textarea:focus {
+  outline: none;
+  border-color: var(--ev-accent);
+}
+.ev-ts-dirty {
+  flex: 0 0 auto;
+  font-size: 10px;
+  color: #b26b00;
+  background: #fff4e0;
+  border-radius: 5px;
+  padding: 2px 6px;
+  margin-top: 3px;
+}
+
+@media (max-width: 520px) {
+  .ev-stage {
+    padding: 18px 14px 60px;
+    min-height: 260px;
+  }
+  .ev-cover-title {
+    font-size: 21px;
+  }
+  .ev-time {
+    order: 3;
+  }
+}

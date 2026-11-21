@@ -60,6 +60,8 @@ ExplainVideo
 | `src/styles.css` | 自包含样式，CSS 变量可主题化 |
 | `demo/` | 独立可运行 demo |
 | `test/timeline.test.ts` | 16 个协议/时间轴测试 |
+| `RUNBOOK.md` | **本地运行手册**：两条运行路径、接口冒烟、缓存验证、故障排查 |
+| `WALKTHROUGH.md` | **说明逐字稿**：架构、协议、时间轴、编辑同步、对接五步、迭代方向 |
 | `ITERATION.md` | 后续迭代细化清单（教学闭环 / 内容密度 / 编辑效率 / 工程化） |
 
 ## 与外语考证宝典的集成
